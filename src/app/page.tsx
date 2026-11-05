@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRef, useState } from "react";
 import { PERSONAS } from "@/lib/personas";
 import type { Comparison, PageSnapshot, PersonaResult, Side, StreamEvent, Summary } from "@/lib/types";
@@ -24,7 +25,7 @@ export default function Home() {
   const [sides, setSides] = useState<Partial<Record<Side, SideState>> | null>(null);
   const [comparison, setComparison] = useState<Comparison | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [cached, setCached] = useState(false);
+  const [cached, setCached] = useState<null | "saved" | "sample">(null);
   const abortRef = useRef<AbortController | null>(null);
 
   async function run(urls: string[], fresh = false) {
@@ -34,7 +35,7 @@ export default function Home() {
     setRunning(true);
     setError(null);
     setComparison(null);
-    setCached(false);
+    setCached(null);
     setSides(urls.length === 2 ? { A: emptySide(urls[0]), B: emptySide(urls[1]) } : { A: emptySide(urls[0]) });
     window.scrollTo({ top: 0, behavior: "smooth" });
 
@@ -85,7 +86,7 @@ export default function Home() {
               else setError(ev.message);
               break;
             case "done":
-              setCached(Boolean(ev.cached));
+              setCached(ev.sample ? "sample" : ev.cached ? "saved" : null);
               break;
           }
         }
@@ -150,12 +151,12 @@ export default function Home() {
           )}
           {cached && !running && (
             <div className="mb-4 flex items-center justify-end gap-3 text-xs text-muted">
-              Showing a saved run.
+              {cached === "sample" ? "Sample results bundled with the demo store." : "Showing a saved run."}
               <button
                 className="font-semibold text-accent hover:underline"
                 onClick={() => run(Object.values(sides).map((s) => s!.url), true)}
               >
-                Re-run live ↻
+                Re-run live ↻{cached === "sample" ? " (needs API key)" : ""}
               </button>
             </div>
           )}
@@ -174,11 +175,8 @@ function Nav({ onHome, showNew, running }: { onHome: () => void; showNew: boolea
   return (
     <header className="sticky top-0 z-20 border-b border-[var(--line)] bg-white/80 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
-        <button onClick={onHome} className="flex items-center gap-2">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg text-white" style={{ background: "linear-gradient(135deg,var(--accent),var(--accent-2))" }}>
-            🛍
-          </span>
-          <span className="text-lg font-bold tracking-tight">ShopperSim</span>
+        <button onClick={onHome} className="flex items-center" aria-label="ShopperSim home">
+          <Image src="/logo.png" alt="ShopperSim" width={1567} height={386} priority className="h-8 w-auto" />
         </button>
         <div className="flex items-center gap-3">
           {running && (
@@ -354,7 +352,7 @@ function ABView({ a, b, comparison, running }: { a: SideState; b: SideState; com
     <div className="space-y-6">
       <div
         className="card overflow-hidden p-6 text-white"
-        style={{ background: "linear-gradient(120deg, #2a1d6e, var(--accent) 55%, var(--accent-2))", borderColor: "transparent" }}
+        style={{ background: "linear-gradient(120deg, var(--navy), #0a4fc4 50%, var(--accent))", borderColor: "transparent" }}
       >
         {comparison ? (
           <div className="pop-in">

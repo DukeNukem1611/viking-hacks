@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Mug } from "../Mug";
 
-export const metadata: Metadata = { title: "Mug - Speckled | Hearth & Kiln" };
+export const metadata: Metadata = { title: "Mug - Speckled | Hearth & Kiln", description: "Mug - Speckled (12oz)" };
 
 // Version A: a typical small-business product page with common conversion problems.
 export default function StoreA() {

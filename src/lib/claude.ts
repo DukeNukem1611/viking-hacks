@@ -1,5 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
+import { betaZodOutputFormat } from "@anthropic-ai/sdk/helpers/beta/zod";
 import { z } from "zod";
 import type { Comparison, PageSnapshot, PersonaDef, PersonaResult, Summary } from "./types";
 import { PERSONAS } from "./personas";
@@ -106,11 +106,14 @@ async function parse<T extends z.ZodType>(
   content: Anthropic.ContentBlockParam[],
   effort: "low" | "medium" | "high",
 ): Promise<z.infer<T>> {
-  const res = await client().messages.parse({
+  const res = await client().beta.messages.parse({
     model: MODEL,
     max_tokens: 16000,
     system,
-    output_config: { effort, format: zodOutputFormat(schema) },
+    output_config: { effort, format: betaZodOutputFormat(schema) },
+    // If a safety classifier declines (e.g. an unusual page), the API retries on a fallback model.
+    betas: ["server-side-fallback-2026-07-01"],
+    fallbacks: "default",
     messages: [{ role: "user", content }],
   });
   if (res.stop_reason === "refusal") throw new Error("The model declined to analyze this page.");

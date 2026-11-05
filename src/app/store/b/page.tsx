@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { Mug } from "../Mug";
 
-export const metadata: Metadata = { title: "Speckled Stoneware Mug, Handmade 12 oz | Hearth & Kiln" };
+export const metadata: Metadata = {
+  title: "Speckled Stoneware Mug, Handmade 12 oz | Hearth & Kiln",
+  description: "Hand-thrown speckled stoneware mug, made in Portland. Free shipping over $45, 30-day returns.",
+};
 
 const reviews = [
   { name: "Erin T.", text: "Heavier and nicer in person. Keeps my coffee hot and the glaze is gorgeous.", when: "2 weeks ago" },
@@ -58,7 +61,7 @@ export default function StoreB() {
           <button className="mt-5 w-full rounded-xl bg-stone-900 py-4 text-lg font-semibold text-white">Add to cart · $38</button>
           <div className="mt-3 grid grid-cols-2 gap-3">
             <button className="rounded-xl bg-[#5a31f4] py-3 font-semibold text-white">Shop Pay</button>
-            <button className="rounded-xl bg-black py-3 font-semibold text-white"> Pay</button>
+            <button className="rounded-xl bg-black py-3 font-semibold text-white">Apple Pay</button>
           </div>
           <p className="mt-2 text-center text-xs text-stone-500">🔒 Secure checkout · Guest checkout available, no account needed</p>
 

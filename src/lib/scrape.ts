@@ -38,13 +38,27 @@ async function snapshotWithBrowser(url: string): Promise<PageSnapshot> {
     await page.waitForLoadState("networkidle", { timeout: 6000 }).catch(() => {});
     await page.waitForTimeout(1200);
 
+    // Scroll through once so lazy-loaded images render, then capture non-overlapping slices.
+    for (let i = 1; i <= MAX_SCREENS; i++) {
+      await page.evaluate((y) => window.scrollTo(0, y), i * VIEW_H);
+      await page.waitForTimeout(350);
+    }
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.waitForTimeout(400);
+
     const height = await page.evaluate(() => document.documentElement.scrollHeight);
     const screens = Math.max(1, Math.min(MAX_SCREENS, Math.ceil(height / VIEW_H)));
     const screenshots: string[] = [];
     for (let i = 0; i < screens; i++) {
-      await page.evaluate((y) => window.scrollTo(0, y), i * VIEW_H);
-      await page.waitForTimeout(500);
-      const buf = await page.screenshot({ type: "jpeg", quality: 72 });
+      const y = i * VIEW_H;
+      const h = Math.min(VIEW_H, height - y);
+      if (h < 80) break;
+      const buf = await page.screenshot({
+        type: "jpeg",
+        quality: 72,
+        fullPage: i > 0,
+        clip: { x: 0, y, width: VIEW_W, height: h },
+      });
       screenshots.push(`data:image/jpeg;base64,${buf.toString("base64")}`);
     }
 

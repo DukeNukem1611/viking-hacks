@@ -1,16 +1,18 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #f6f5fb;
+  /* Brand: navy #002049 + blue #016efe (from the ShopperSim logo) */
+  --bg: #f5f7fb;
   --panel: #ffffff;
-  --panel-2: #f1f0f7;
-  --ink: #16131f;
-  --muted: #6b6880;
-  --line: #e4e2ee;
-  --track: #ecebf3;
-  --accent: #6d4aff;
-  --accent-2: #c04bff;
-  --accent-soft: #f2efff;
+  --panel-2: #eff3f9;
+  --ink: #0a1d3d;
+  --navy: #002049;
+  --muted: #5d6b82;
+  --line: #e1e7f0;
+  --track: #e8edf5;
+  --accent: #016efe;
+  --accent-2: #3fa2ff;
+  --accent-soft: #eaf2ff;
   color-scheme: light;
 }
 
@@ -32,7 +34,7 @@ body {
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 16px;
-  box-shadow: 0 1px 2px rgba(22, 19, 31, 0.04), 0 4px 16px rgba(22, 19, 31, 0.04);
+  box-shadow: 0 1px 2px rgba(0, 32, 73, 0.04), 0 4px 16px rgba(0, 32, 73, 0.04);
 }
 
 .bubble {
@@ -66,12 +68,12 @@ body {
   color: white;
   font-weight: 600;
   border-radius: 12px;
-  box-shadow: 0 6px 20px -6px rgba(109, 74, 255, 0.6);
+  box-shadow: 0 6px 20px -6px rgba(1, 110, 254, 0.45);
   transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
 }
 .btn-primary:hover:not(:disabled) {
   transform: translateY(-1px);
-  box-shadow: 0 10px 24px -6px rgba(109, 74, 255, 0.7);
+  box-shadow: 0 10px 24px -6px rgba(1, 110, 254, 0.55);
 }
 .btn-primary:disabled {
   opacity: 0.6;
@@ -146,6 +148,6 @@ body {
 }
 
 .hero-glow {
-  background: radial-gradient(60% 50% at 50% 0%, rgba(109, 74, 255, 0.16), transparent 70%),
-    radial-gradient(40% 40% at 85% 20%, rgba(192, 75, 255, 0.12), transparent 70%);
+  background: radial-gradient(60% 50% at 50% 0%, rgba(1, 110, 254, 0.13), transparent 70%),
+    radial-gradient(40% 40% at 85% 20%, rgba(63, 162, 255, 0.12), transparent 70%);
 }

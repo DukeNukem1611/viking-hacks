@@ -34,16 +34,18 @@ export async function POST(req: NextRequest) {
       };
 
       try {
-        const cached = body.fresh ? null : await readCache(key);
+        // Without an API key, saved runs and bundled samples are always served (even if "fresh" was requested).
+        const cached = body.fresh && hasApiKey() ? null : await readCache(key);
         if (cached) {
-          await replay(cached, send);
-          send({ type: "done", cached: true }, false);
+          await replay(cached.events, send, origin);
+          send({ type: "done", cached: true, sample: cached.sample }, false);
           return;
         }
         if (!hasApiKey()) {
           send({
             type: "error",
-            message: "No ANTHROPIC_API_KEY configured. Add it to .env.local, or try one of the demo stores.",
+            message:
+              "Live analysis of new pages needs an ANTHROPIC_API_KEY in .env.local. The demo store buttons on the home page work without one.",
           });
           return;
         }
@@ -113,12 +115,13 @@ async function analyzeSide(
 }
 
 /** Replays a cached run with realistic pacing so the demo still feels live. */
-async function replay(events: StreamEvent[], send: (ev: StreamEvent, record?: boolean) => void) {
+async function replay(events: StreamEvent[], send: (ev: StreamEvent, record?: boolean) => void, origin: string) {
   for (const ev of events) {
     if (ev.type === "snapshot") {
       send({ type: "status", side: ev.side, message: "Opening the page in a real browser…" }, false);
       await sleep(900);
-      send(ev, false);
+      const url = ev.snapshot.url.startsWith("/") ? origin + ev.snapshot.url : ev.snapshot.url;
+      send({ ...ev, snapshot: { ...ev.snapshot, url } }, false);
       send({ type: "status", side: ev.side, message: `${PERSONAS.length} shoppers are browsing…` }, false);
       await sleep(1200);
     } else if (ev.type === "persona") {

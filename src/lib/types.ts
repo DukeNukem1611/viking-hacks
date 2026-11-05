@@ -78,4 +78,4 @@ export type StreamEvent =
   | { type: "summary"; side: Side; summary: Summary }
   | { type: "compare"; comparison: Comparison }
   | { type: "error"; side?: Side; message: string }
-  | { type: "done"; cached?: boolean };
+  | { type: "done"; cached?: boolean; sample?: boolean };
