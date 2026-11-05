@@ -106,7 +106,7 @@ export function PersonaCard({ id, result }: { id: string; result?: PersonaResult
   const [open, setOpen] = useState(false);
   if (!result) {
     return (
-      <div className="card flex items-center gap-3 p-4 opacity-80">
+      <div className="card flex items-center gap-3 self-start p-4 opacity-80">
         <div className="animate-pulse">
           <Avatar id={id} />
         </div>

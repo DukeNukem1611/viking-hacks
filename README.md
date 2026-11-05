@@ -8,7 +8,7 @@ ShopperSim shows small online stores why visitors don't buy. Paste a product pag
 
 Built for the **Viking Hacks mini-hackathon, Ecommerce track**.
 
-![ShopperSim landing page](docs/landing.png)
+![ShopperSim landing page](docs/devpost/01-landing.png)
 
 ---
 
@@ -56,7 +56,7 @@ ShopperSim gives a small store owner a simulated focus group in about a minute, 
 - **Eight shopper reactions**, each with a verdict, purchase probability, quote, specific friction points and the one change that would win them over
 - A **ranked action plan**: 3–6 fixes sorted by impact, labeled by effort (quick win, moderate, bigger project), with ready-to-paste copy, the shoppers each fix wins over, and an estimated score gain
 
-![Single page results](docs/results.png)
+![Single page results](docs/devpost/03-results.png)
 
 **A/B test two pages.** Paste two URLs and get:
 - A **predicted winner** with a confidence level and the reasoning
@@ -64,7 +64,7 @@ ShopperSim gives a small store owner a simulated focus group in about a minute, 
 - A **what-changed table** showing which version handles trust, pricing clarity, calls to action and so on better
 - The full breakdown for each version
 
-![A/B test results](docs/ab-results.png)
+![A/B test results](docs/devpost/06-ab-winner.png)
 
 <sub>Screenshots show the bundled demo-store sample results.</sub>
 
